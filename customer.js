@@ -9,16 +9,19 @@ var keys = require("./keys.js");
 
 // mysql server connection 
 var connection = mysql.createConnection ({
-    
-    host: keys.sql.db_host,
+    host: "localhost",
+
     port: 3306,
-    user: keys.sql.db_user,
+
+    user: "root",
+
     password: keys.sql.password,
-    database: keys.sql.db_name
+
+    database: "bamazon_DB"
 });
 
 // check connection
 connection.connect(function(err) {
     if (err) throw err;
-    console.log("Connected to the Bamazon Server");
+    console.log("Connected to the Bamazon Server\n");
 });
