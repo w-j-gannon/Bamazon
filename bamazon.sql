@@ -5,15 +5,15 @@ CREATE DATABASE bamazon_DB;
 USE bamazon_DB;
 
 CREATE TABLE products(
-id INTEGER NOT NULL auto_increment,
+item_id INTEGER NOT NULL auto_increment,
 product_name VARCHAR(50) NOT NULL,
 department_name VARCHAR(50) NOT NULL,
 price DECIMAL (7,2) NOT NULL,
-stock INTEGER NOT NULL,
-PRIMARY KEY (id)
+stock_quantity INTEGER NOT NULL,
+PRIMARY KEY (item_id)
 );
 
-INSERT INTO products (product_name, department_name, price, stock)
+INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("iPhone XR", "Smart Phones", 749.00, 10),
 ("Samsung Galaxy S10", "Smart Phones", 999.99, 10),
 ("Huawei Mate 10 Pro", "Smart Phones", 799.00, 2),
