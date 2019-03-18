@@ -1,5 +1,5 @@
 // requirements
-require("dotenv").config();
+//require("dotenv").config();
 
 var mysql = require("mysql");
 
@@ -15,7 +15,8 @@ var connection = mysql.createConnection ({
 
     user: "root",
 
-    password: keys.sql.password,
+    //password: keys.sql.password,
+    password: "MinkNoidOink",
 
     database: "bamazon_DB"
 });
@@ -33,8 +34,9 @@ function readStock() {
         if (err) throw (err);
         console.log("Items for sale:\n");
         for (var i = 0; i < res.length; i++) {
-            console.log(res.item_id[i] + " | " + res.product_name[i] + " | $" + res.price[i]);
+            console.log(res[i].item_id + " | " + res[i].product_name + " | $" + res[i].price);
         }
+        console.log("\n-----------------------------------\n");
         transaction();
     })
 };
@@ -42,7 +44,7 @@ function readStock() {
 // prompt customer for sale, go through transaction, end connection after
 function transaction() {
     inquirer
-        prompt([
+        .prompt([
             {
                 type: "input",
                 name: "item",
@@ -82,11 +84,11 @@ function transaction() {
                         var newQuantity = res[0].stock_quantity - orderQuantity;
                         var salePrice = orderQuantity * price;
                         updateStock(newQuantity, orderId);
-                        console.log("Sale complete. You will be charged $ " + salePrice + ".")
+                        console.log("\nSale complete. You will be charged $ " + salePrice + ".\n")
 
                         // ask for another transaction
                         inquirer
-                            prompt([
+                            .prompt([
                                 {
                                     type: "list",
                                     name: "resale",
@@ -101,13 +103,13 @@ function transaction() {
 
                                 // no, goodbye and end connection
                                 } else {
-                                    console.log("Thank you for visiting Bamazon." );
+                                    console.log("\nThank you for visiting Bamazon." );
                                     connection.end();
                                 }
                             })
                     // if not enough stock, try again
                     } else {
-                        console.log("Sorry, low stock. Try a lower quantity or select another item.");
+                        console.log("\nSorry, low stock. Try a lower quantity or select another item.\n");
                         transaction();
                     }
                 }
@@ -116,6 +118,16 @@ function transaction() {
 };
 
 // update database after sale
-function updateStock() {
-
+function updateStock(newQuantity, orderId) {
+    connection.query(
+        "UPDATE products SET ? WHERE ?", [
+            {
+                stock_quantity: newQuantity
+            },{
+                item_id: orderId
+            }
+        ], function(err, res) {
+            if (err) throw (err);
+        }
+    )
 };
