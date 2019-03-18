@@ -24,7 +24,7 @@ var connection = mysql.createConnection ({
 // check connection, start readStock;
 connection.connect(function(err) {
     if (err) throw err;
-    console.log("Welcome to the Bamazon!\n");
+    console.log("\nWelcome to the Bamazon!\n");
     readStock();
 });
 
